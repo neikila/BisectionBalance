@@ -34,7 +34,7 @@ trait MyVarMatrix extends MatrixRepo {
 
   private def excluded: List[Node] = 1 :: 2 :: 5 :: 6 ::
     9 :: 13 :: 14 :: 15 :: 16 ::
-    25 :: 26 :: 27 :: 29 :: 30 :: 31 :: Nil
+    25 :: 26 :: 27 :: 28 :: 29 :: 30 :: 31 :: 32 :: Nil
   private def extraLinks: List[Link] = Link(8, 21) :: Nil
 
   private val size = 4
@@ -117,10 +117,43 @@ object Main extends LMatrixCreator with MyVarMatrix {
     val factory = DoubleFactory2D.dense
 
     val matrix2D: DoubleMatrix2D = factory.make(createLAsArray)
-    println(matrix2D)
+    println("A")
+    var i = 0
+    var j = 0
+    matrix2D.toArray.foreach { line =>
+      j = 0
+      line.foreach { el =>
+        print(f"${if (i == j) 0 else -el.toInt}%d;")
+        j += 1
+      }
+      i += 1
+      println
+    }
+    println("B")
+    i = 0
+    j = 0
+    matrix2D.toArray.foreach { line =>
+      j = 0
+      line.foreach { el =>
+        print(f"${if (i != j) 0 else el.toInt}%d;")
+        j += 1
+      }
+      i += 1
+      println
+    }
+    println("L")
+    matrix2D.toArray.foreach{ line => line.foreach(el => print(f"${el.toInt}%d;")); println }
 
     val solver = new EigenvalueDecomposition(matrix2D)
     val eigenVectors: DoubleMatrix2D = solver.getV
+
+    mapping.foreach(el => print(s"Q$el;"))
+    println
+    println("Eigen vals")
+    solver.getRealEigenvalues.toArray.foreach(el => print(f"$el%1.2f;"))
+    println
+    println("Eigen vectors")
+    eigenVectors.toArray.foreach{ line => line.foreach(el => print(f"$el%1.2f;")); println }
 
     val uList: List[(Double, Int)] = eigenVectors.viewColumn(1).toArray.toList.zipWithIndex
     val average: Double = uList.map(_._1).average
