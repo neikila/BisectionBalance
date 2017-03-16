@@ -33,7 +33,7 @@ trait ExampleMatrix extends MatrixRepo {
 trait MyVarMatrix extends MatrixRepo {
 
   private def excluded: List[Node] = 1 :: 2 :: 5 :: 6 ::
-    9 :: 13 :: 14 :: 15 :: 16 ::
+    9 :: 10 :: 13 :: 14 :: 15 :: 16 ::
     25 :: 26 :: 27 :: 28 :: 29 :: 30 :: 31 :: 32 :: Nil
   private def extraLinks: List[Link] = Link(8, 21) :: Nil
 
@@ -163,6 +163,8 @@ object Main extends LMatrixCreator with MyVarMatrix {
     println(s"First: ${firstPart.map { case (value, id) => mapping(id)}}")
     println(s"Second: ${secondPart.map { case (value, id) => mapping(id)}}")
     println(s"Middle: ${uListMedian.map { case (value, id) => mapping(id)}}")
+
+    println(s"average = ${average * math.pow(eigenVectors.size(), 0.5)}")
   }
 
   implicit class ListExtended(list: List[Double]) {
